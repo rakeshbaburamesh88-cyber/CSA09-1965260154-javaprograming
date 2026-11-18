@@ -1,0 +1,16 @@
+Task A4 - What should be serialized?
+
+Save: resident name, register number, room details, hostel details.
+
+Mark as transient:
+    transient String password;
+    transient Connection connection;
+Reason: a live database Connection cannot be meaningfully restored by serialization;
+passwords should not be stored as plain text.
+
+All objects in the graph (Hostel, Room, Resident) must implement Serializable, except transient fields.
+
+Versioning: keep a compatible serialVersionUID so older files can still be read:
+    private static final long serialVersionUID = 1L;
+A new field (e.g. phone number) gets its default value (null for String) when reading an old file.
+A mismatched serialVersionUID may throw InvalidClassException.
